@@ -1,0 +1,5 @@
+rootProject.name = 'spring_cloud'
+include("server")
+include("gateway")
+include("gallery")
+include("image")

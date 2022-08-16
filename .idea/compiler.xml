@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="eureka" target="11" />
+      <module name="eureka_server" target="11" />
+      <module name="eureka_server.main" target="11" />
+      <module name="eureka_server.test" target="11" />
+      <module name="gateway.test" target="11" />
+      <module name="microservice.eureka" target="11" />
+      <module name="microservice.eureka.main" target="11" />
+      <module name="microservice.eureka.test" target="11" />
+      <module name="microservice.eureka_server" target="11" />
+      <module name="microservice.eureka_server.main" target="11" />
+      <module name="microservice.eureka_server.test" target="11" />
+      <module name="microservice.gallery" target="11" />
+      <module name="microservice.gallery.main" target="11" />
+      <module name="microservice.gallery.test" target="11" />
+      <module name="microservice.gateway" target="11" />
+      <module name="microservice.gateway.main" target="11" />
+      <module name="microservice.gateway.test" target="11" />
+      <module name="microservice.image" target="11" />
+      <module name="microservice.image.main" target="11" />
+      <module name="microservice.image.test" target="11" />
+      <module name="microservice.loadbalancer.main" target="11" />
+      <module name="microservice.loadbalancer.test" target="11" />
+      <module name="microservice.server" target="11" />
+      <module name="microservice.server.main" target="11" />
+      <module name="microservice.server.test" target="11" />
+      <module name="spring_cloud.gateway.test" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
