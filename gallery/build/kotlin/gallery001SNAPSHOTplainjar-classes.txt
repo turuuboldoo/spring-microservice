@@ -1,1 +1,0 @@
-/home/turbold/Project/spring_cloud/gallery/build/classes/kotlin/main/com/turbo/gallery/GalleryApplication.class:/home/turbold/Project/spring_cloud/gallery/build/classes/kotlin/main/com/turbo/gallery/GalleryApplicationKt.class:/home/turbold/Project/spring_cloud/gallery/build/classes/kotlin/main/com/turbo/gallery/ServiceInstanceRestController.class
