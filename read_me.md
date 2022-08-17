@@ -20,20 +20,19 @@ docker-compose up -d
 гэсэн дараалалаар main function-уудыг run хийнэ. Бүгд ассан бол [http://localhost:8080/eureka](http://localhost:8080/eureka) холбоосоор орж 
 server-т холбогдсон service-уудыг шалгаарай.
 
-Ассан байгаа URL
+Active URL
 
-[http://localhost:8089](http://localhost:8089)
+[phpMyAdmin](http://localhost:8089)
+\
+[Server Dashboard](http://localhost:8080/eureka)
+\
+[Gallery API](http://localhost:8080/api/gallery)
+
 ```
 Phpmyadmin 
 username = root
 password = secret
 ```
-\
-[http://localhost:8080/eureka](http://localhost:8080/eureka)
-\
-[http://localhost:8080/api/gallery](http://localhost:8080/api/gallery)
-\
-[http://localhost:8080/api/gallery/galleries](http://localhost:8080/api/gallery/galleries)
 
 ## Хэрхэн ажиллад байна вэ?
 Server module нь service-үүдыг (энэ тохиолдолд Gallery болон Image module-ууд) бүртэж нэг domain name-р хоорондох харилцах боломжтой болгож байгаа юм.
