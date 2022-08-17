@@ -13,9 +13,10 @@ class GalleryRouteConfig(
     @Bean
     fun routes() = coRouter {
         GET("/", handler::getRoot)
+        GET("api/gallery", handler::getRoot)
 
         "api/gallery".nest {
-            GET("", handler::getGalleries)
+            GET("/galleries", handler::getGalleries)
         }
     }
 
