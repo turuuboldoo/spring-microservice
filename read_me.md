@@ -35,6 +35,15 @@ password = secret
 \
 [http://localhost:8080/api/gallery/galleries](http://localhost:8080/api/gallery/galleries)
 
+## Хэрхэн ажиллад байна вэ?
+Server module нь service-үүдыг (энэ тохиолдолд Gallery болон Image module-ууд) бүртэж нэг domain name-р хоорондох харилцах боломжтой болгож байгаа юм.
+Харин Gateway module бол аль module (service)-рүү хүсэлт чиглүүлэх болон loadbalancer үүрэг гүйцэтгэнэ. (Gateway service-н application.yml file дээрх тохиргоог харна уу)
+Service-үүд ганцаараа бие даан ажиллах чадвартай байх ба өөрийн гэсэн database-тэй байна.
+\
+[Eureka server](https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-eureka-server.html)
+\
+[Eureka client](https://cloud.spring.io/spring-cloud-netflix/multi/multi__service_discovery_eureka_clients.html)
+
 Даалгавар
 1. Image service дээр coroutine api ашиглан database болон api гаргах
 2. Gallery service-c Image service-рүү хүсэлт шидэн ирсэн response-той хамт gallery мэдээлэл буцаах api
