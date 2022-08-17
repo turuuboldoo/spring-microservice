@@ -7,6 +7,8 @@ services:
       MYSQL_ROOT_PASSWORD: secret
     ports:
       - "3306:3306"
+    expose:
+      - 3306
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 20s
@@ -14,6 +16,8 @@ services:
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
+    networks:
+      - bridge
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -27,7 +31,66 @@ services:
     restart: always
     ports:
       - "8089:80"
+    networks:
+      - bridge
+
+  server:
+    image: server
+    container_name: server
+    build: ./server/.
+    restart: always
+    ports:
+      - "8761:8761"
+    networks:
+      - bridge
+
+  gateway:
+    image: gateway
+    container_name: gateway
+    build: ./gateway/.
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - server
+    networks:
+      - bridge
+
+  gallery:
+    image: gallery
+    container_name: gallery
+    build: ./gallery/.
+    restart: always
+    links:
+      - mysql
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - server
+      - gateway
+    networks:
+      - bridge
+
+  image:
+    image: image
+    container_name: image
+    build: ./image/.
+    restart: always
+    links:
+      - mysql
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql
+      - server
+      - gateway
+    networks:
+      - bridge
 
 volumes:
   db_data:
     driver: local
+
+networks:
+  bridge:

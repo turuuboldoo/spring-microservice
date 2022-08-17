@@ -8,34 +8,35 @@ spring:
     gateway:
       routes:
         - id: gallery
-          uri: lb://gallery
+          uri: http://172.17.0.1:8081
           predicates:
             - Path=/api/gallery
         - id: image
-          uri: lb://image
+          uri: http://172.17.0.1:8082
           predicates:
             - Path=/api/image/*
         - id: eureka
-          uri: http://localhost:8761
+          uri: http://172.17.0.1:8761
           predicates:
             - Path=/eureka
           filters:
             - SetPath=/
         - id: eureka_server_static
-          uri: http://localhost:8761
+          uri: http://172.17.0.1:8761
           predicates:
             - Path=/eureka/**
 
 eureka:
   instance:
     prefer-ip-address: true
+    ip-address: 172.17.0.1
   client:
     service-url:
-      default-zone: http://localhost:8761/eureka
+      defaultZone: http://172.17.0.1:8761/eureka/
 
 # set log
-#logging:
-#  level:
-#    root: INFO
-#    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
-#    org.springframework.cloud.gateway: TRACE
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+    org.springframework.cloud.gateway: TRACE
