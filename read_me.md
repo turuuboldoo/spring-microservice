@@ -48,4 +48,9 @@ Service-үүд ганцаараа бие даан ажиллах чадварт�
 1. Image service дээр coroutine api ашиглан database болон api гаргах
 2. Gallery service-c Image service-рүү хүсэлт шидэн ирсэн response-той хамт gallery мэдээлэл буцаах api
 
-Dockerfile coming soon.
+### Microservices from Docker
+Docker орчноос асаах бол
+```
+git fetch --all
+git checkout dockerized
+```
