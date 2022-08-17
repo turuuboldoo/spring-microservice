@@ -47,8 +47,13 @@ Service-үүд ганцаараа бие даан ажиллах чадварт�
 1. Image service дээр coroutine api ашиглан database болон api гаргах
 2. Gallery service-c Image service-рүү хүсэлт шидэн ирсэн response-той хамт gallery мэдээлэл буцаах api
 
+Даалгавараа хийхдээ өөртийн нэрээр шинэ branch үүсгэн тухан branch дээрээ хийгээрэй.
+```
+git checkout -b 'your branch name here'
+```
+
 ### Microservices from Docker
-Docker орчноос асаах бол
+Docker орчноос асаах бол (Start services from docker production mode)
 ```
 git fetch --all
 git checkout dockerized
