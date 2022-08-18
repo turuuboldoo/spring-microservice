@@ -5,9 +5,8 @@ spring:
   application:
     name: image
   r2dbc:
-    url: r2dbc:mysql://localhost:3306
-    name: image
-    username: root
+    url: r2dbc:postgresql://localhost:5432/gallery?createDatabaseIfNotExist=true
+    username: postgres
     password: secret
 
 eureka:
