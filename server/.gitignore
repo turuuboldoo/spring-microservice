@@ -1,12 +1,7 @@
-/.gradle/
-/.idea/
-gradle/
-build/
-
-./**/.idea/
-./**/build/
-./**/.gradle/
-./**/gradle/
+.idea
+.gradle
+build
+gradle
 
 *.iml
 .idea/workspace.xml
