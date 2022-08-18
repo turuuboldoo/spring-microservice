@@ -1,33 +1,27 @@
 version: "3.9"
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql
+  postgresql:
+    image: postgres:alpine
+    container_name: "postgresql"
     environment:
-      MYSQL_ROOT_PASSWORD: secret
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
-      - "3306:3306"
+      - "5432:5432"
     healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-      timeout: 20s
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      timeout: 15s
       retries: 10
-    volumes:
-      - ./sql:/docker-entrypoint-initdb.d
-      - db_data:/var/lib/mysql
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    links:
-      - mysql
-    depends_on:
-      - mysql
-    environment:
-      PMA_HOST: mysql
+  pgadmin:
+    container_name: "pgadmin"
+    image: dpage/pgadmin4:latest
     restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@database.com
+      PGADMIN_DEFAULT_PASSWORD: secret
     ports:
       - "8089:80"
-
-volumes:
-  db_data:
-    driver: local
+    depends_on:
+      - postgresql
