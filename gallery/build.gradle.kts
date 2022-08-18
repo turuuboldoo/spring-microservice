@@ -34,8 +34,6 @@ dependencies {
 
     implementation("dev.miku:r2dbc-mysql:0.8.2.RELEASE")
 
-//    runtimeOnly("mysql:mysql-connector-java")
-
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 

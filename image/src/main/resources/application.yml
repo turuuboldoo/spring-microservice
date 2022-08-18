@@ -1,13 +1,14 @@
 server:
-  port: 8083
+  port: 8082
 
 spring:
   application:
     name: image
-    r2dbc:
-      url: r2dbc:mysql://127.0.0.1/image
-      username: root
-      password: secret
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306
+    name: image
+    username: root
+    password: secret
 
 eureka:
   instance:
