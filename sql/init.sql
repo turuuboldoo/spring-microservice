@@ -12,3 +12,10 @@ INSERT INTO gallery.galleries (title, description)
 VALUES ('birthday', 'birthday at work'),
        ('vacation', 'hawaii island was amazing'),
        ('nba finals', 'nba finals 2021-2022');
+
+create table image.image
+(
+    id           SERIAL PRIMARY KEY,
+    name        VARCHAR(255) NOT NULL,
+    url         VARCHAR(255) NOT NULL
+);

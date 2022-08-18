@@ -1,11 +1,11 @@
 server:
-  port: 8081
+  port: 8088
 
 spring:
   application:
     name: gallery
   r2dbc:
-    url: r2dbc:mysql://localhost:3306
+    url: r2dbc:mysql://localhost:3307
     name: gallery
     username: root
     password: secret
