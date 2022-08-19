@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8091/realms/services
   cloud:
     gateway:
       routes:

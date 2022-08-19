@@ -28,6 +28,17 @@ services:
     ports:
       - "8089:80"
 
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    container_name: keycloak
+    ports:
+      - "8091:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: secret
+    command:
+      - start-dev
+
 volumes:
   db_data:
     driver: local
