@@ -33,12 +33,14 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
     implementation("dev.miku:r2dbc-mysql:0.8.2.RELEASE")
+    implementation("org.mockito:mockito-core:4.7.0")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testApi("io.projectreactor:reactor-test:3.4.22")
 }
 
 dependencyManagement {
