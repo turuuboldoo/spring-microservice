@@ -5,7 +5,7 @@ spring:
   application:
     name: image
   r2dbc:
-    url: r2dbc:postgresql://localhost:5432/gallery?createDatabaseIfNotExist=true
+    url: r2dbc:postgresql://localhost:8090/image?createDatabaseIfNotExist=true
     username: postgres
     password: secret
 

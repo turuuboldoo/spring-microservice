@@ -1,5 +1,6 @@
 package com.turbo.image
 
+import kotlinx.coroutines.flow.Flow
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient
@@ -23,23 +24,6 @@ fun main(args: Array<String>) {
     runApplication<ImageApplication>(*args)
 }
 
-//@RestController
-//@RequestMapping
-//class HomeController {
-//
-//    @GetMapping("/")
-//    fun hello() = "Hello! There"
-//
-//    @GetMapping("/api/image")
-//    fun getImages() = listOf(
-//        Image(1, "Treehouse of Horror V", "https://www.imdb.com/title/tt0096697/mediaviewer/rm3842005760"),
-//        Image(2, "The Town", "https://www.imdb.com/title/tt0096697/mediaviewer/rm3698134272"),
-//        Image(3, "The Last Traction Hero", "https://www.imdb.com/title/tt0096697/mediaviewer/rm1445594112")
-//    )
-//
-//
-//}
-
 @Configuration
 @EnableR2dbcRepositories
 class DatabaseConfig
@@ -55,23 +39,29 @@ class RouteConfig {
             .build()
 }
 
-@Table("image")
+@Table("images")
 data class Image(
     @Id
     var id: Int,
+
     @Column
     var name: String,
+
     @Column
     var url: String,
+
+    @Column("gallery_id")
+    var galleryId: Long,
 )
 
+interface ImageRepository : CoroutineCrudRepository<Image, Long> {
 
-interface ImageRepository : CoroutineCrudRepository<Image, Long>
+    fun findByGalleryId(galleryId: Long): Flow<Image>
+
+}
 
 @Component
-class ImageHandler(
-    private val repository: ImageRepository
-) {
+class ImageHandler(private val repository: ImageRepository) {
 
     suspend fun getRoot(request: ServerRequest) =
         ServerResponse.ok()
@@ -80,12 +70,46 @@ class ImageHandler(
                 mapOf("message" to "Hello! There")
             )
 
-    suspend fun getImagies(request: ServerRequest) =
-        ServerResponse
+    suspend fun getImages(request: ServerRequest): ServerResponse {
+        val galleryId = request.queryParam("galleryId")
+            .orElse(null)
+
+        if (!galleryId.isNullOrEmpty()) {
+
+            val images = repository.findByGalleryId(galleryId.toLong())
+
+            return ServerResponse
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyAndAwait(images)
+        }
+
+        return ServerResponse
             .ok()
             .contentType(MediaType.APPLICATION_JSON)
             .bodyAndAwait(repository.findAll())
+    }
+
+    suspend fun getImage(request: ServerRequest): ServerResponse {
+        val id = request.pathVariable("id").toLong()
+
+        val image = repository.findById(id)
+
+        return when {
+            image != null -> {
+                ServerResponse
+                    .ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValueAndAwait(image)
+            }
+
+            else -> ServerResponse
+                .notFound()
+                .buildAndAwait()
+        }
+    }
 }
+
 
 @Configuration
 class ImageRouteConfig(
@@ -94,12 +118,7 @@ class ImageRouteConfig(
 
     @Bean
     fun routes() = coRouter {
-        GET("/", handler::getRoot)
-        GET("api/image", handler::getRoot)
-
-        "api/image".nest {
-            GET("/imagies", handler::getImagies)
-        }
+        GET("api/images", handler::getImages)
+        GET("api/images/{id}", handler::getImage)
     }
-
 }
