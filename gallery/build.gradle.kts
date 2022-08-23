@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.turbo.gallery"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
@@ -22,25 +22,24 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    implementation("org.springframework.data:spring-data-r2dbc")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
+    implementation("com.h2database:h2")
+    implementation("io.r2dbc:r2dbc-h2")
     implementation("dev.miku:r2dbc-mysql:0.8.2.RELEASE")
-    implementation("org.mockito:mockito-core:4.7.0")
-
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+    // kotlin mock
+    testImplementation("io.mockk:mockk:1.12.5")
+    testImplementation("io.projectreactor:reactor-test")
+    testImplementation("com.ninja-squad:springmockk:3.1.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testApi("io.projectreactor:reactor-test:3.4.22")
 }
 
 dependencyManagement {

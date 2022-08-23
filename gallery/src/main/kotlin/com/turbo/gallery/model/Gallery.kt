@@ -1,13 +1,9 @@
 package com.turbo.gallery.model
 
-import lombok.Builder
-import lombok.Getter
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 
-@Getter
-@Builder(toBuilder = true)
 @Table("galleries")
 data class Gallery(
     @Id

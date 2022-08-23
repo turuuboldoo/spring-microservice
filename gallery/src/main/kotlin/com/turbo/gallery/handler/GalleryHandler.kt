@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.server.*
 
 @Component
 class GalleryHandler(
-    private val repository: GalleryRepository
+    private val repository: GalleryRepository,
 ) {
 
     suspend fun getRoot(request: ServerRequest) =
@@ -18,15 +18,16 @@ class GalleryHandler(
                 mapOf("message" to "Hello! There")
             )
 
-    suspend fun getGalleries(request: ServerRequest) =
+    suspend fun index(request: ServerRequest) =
         ServerResponse
             .ok()
             .contentType(MediaType.APPLICATION_JSON)
             .bodyAndAwait(repository.findAll())
 
-    suspend fun getGallery(request: ServerRequest): ServerResponse {
+    suspend fun show(request: ServerRequest): ServerResponse {
         val id = request.pathVariable("id").toLong()
-        val gallery = repository.findById(id)
+        val gallery = repository.findById(id) ?: return ServerResponse.notFound()
+            .buildAndAwait()
 
         return ServerResponse
             .ok()
@@ -34,13 +35,30 @@ class GalleryHandler(
             .bodyValueAndAwait(gallery)
     }
 
-    suspend fun create(request: ServerRequest): ServerResponse {
+    suspend fun store(request: ServerRequest): ServerResponse {
         val requestBody = request.awaitBody(Gallery::class)
+
+        if (requestBody.title.isNullOrEmpty() && requestBody.description.isNullOrEmpty()) {
+            return ServerResponse
+                .badRequest()
+                .buildAndAwait()
+        }
+
         val galleryId = repository.save(requestBody)
 
         return ServerResponse
             .status(201)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValueAndAwait(repository.findById(galleryId.getValue("id") as Long))
+            .bodyValueAndAwait(galleryId)
     }
+
+    suspend fun update(request: ServerRequest) =
+        ServerResponse
+            .badRequest()
+            .buildAndAwait()
+
+    suspend fun delete(request: ServerRequest) =
+        ServerResponse
+            .badRequest()
+            .buildAndAwait()
 }
