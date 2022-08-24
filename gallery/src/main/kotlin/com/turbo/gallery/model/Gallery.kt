@@ -15,7 +15,7 @@ data class Gallery(
     @Column
     var description: String? = null,
 
-    var image : List<Image>? =null
+    var image: List<Image>? = null
 )
 
 
@@ -23,5 +23,5 @@ data class Image(
     var id: Int,
     var name: String,
     var url: String,
-    var gallery_id: Long,
+    var galleryId: Int,
 )

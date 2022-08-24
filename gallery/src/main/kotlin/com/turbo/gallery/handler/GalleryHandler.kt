@@ -34,16 +34,20 @@ class GalleryHandler(
         val id = request.pathVariable("id").toLong()
         val gallery = repository.findById(id)
 
-        val body = client
-            .get()
-            .uri("http://localhost:8080/api/image/${id}")
-            .accept(MediaType.APPLICATION_JSON)
-            .retrieve()
-            .awaitBody<List<Image>>()
 
-        println(body)
+        val with = request.queryParam("with")
+            .orElse(null)
 
-        gallery?.image = body
+        if (!with.isNullOrEmpty() && with.equals("images")) {
+            val body = client.get()
+                .uri("http://localhost:8085/api/images?galleryId=${id}")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .awaitBody<List<Image>>()
+
+            println(body)
+            gallery?.image = body
+        }
 
         return when {
             gallery != null -> {
