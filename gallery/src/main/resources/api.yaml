@@ -1,0 +1,50 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Sample application
+  license:
+    name: APL2
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /gallery:
+    get:
+      tags:
+        - Gallery
+      description: get all galleries
+      responses:
+        '200':
+          description: Returns the galleries
+    post:
+      tags:
+        - Gallery
+      description: store gallery
+      parameters:
+        - name: gallery
+          description: The user
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/gallery'
+      responses:
+        '200':
+          description: Echo the request inputs
+
+definitions:
+  gallery:
+    required:
+      - title
+      - description
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+    example:
+      title: nba
+      description: nba games

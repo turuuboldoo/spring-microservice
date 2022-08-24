@@ -25,7 +25,7 @@ dependencies {
 
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("io.github.cdimascio:openapi-spring-webflux-validator:3.5.0")
 
     implementation("org.springframework.data:spring-data-r2dbc")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -33,9 +33,6 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
     implementation("dev.miku:r2dbc-mysql:0.8.2.RELEASE")
-
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

@@ -7,12 +7,14 @@ import org.springframework.web.reactive.function.server.coRouter
 
 @Configuration
 class GalleryRouteConfig(
-    private val handler: GalleryHandler
+    private val handler: GalleryHandler,
 ) {
 
     @Bean
     fun routes() = coRouter {
         GET("/", handler::getRoot)
-        GET("api/gallery", handler::getGalleries)
+        GET("api/gallery", handler::index)
+        GET("api/gallery/{id}", handler::show)
+        POST("api/gallery", handler::store)
     }
 }
