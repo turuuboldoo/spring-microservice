@@ -10,17 +10,17 @@ import org.springframework.web.reactive.function.server.bodyValueAndAwait
 
 @Component
 class GalleryHandler(
-    private val repository: GalleryRepository
+    private val repository: GalleryRepository,
 ) {
 
-    suspend fun getRoot(request: ServerRequest) =
+    suspend fun hello(request: ServerRequest) =
         ServerResponse.ok()
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValueAndAwait(
                 mapOf("message" to "Hello! There")
             )
 
-    suspend fun getGalleries(request: ServerRequest) =
+    suspend fun index(request: ServerRequest) =
         ServerResponse
             .ok()
             .contentType(MediaType.APPLICATION_JSON)
