@@ -14,6 +14,8 @@ class GalleryRouteConfig(
         GET("/", handler::getRoot)
         GET("api/galleries", handler::getGalleries)
         GET("api/galleries/{id}", handler::getGallery)
-        POST("api/createGalleries", handler::createGalleries)
+        POST("api/galleries", handler::createGalleries)
+        PUT("api/galleries/{id}", handler::updateGalleries)
+        DELETE("api/galleries/{id}", handler::delete)
     }
 }

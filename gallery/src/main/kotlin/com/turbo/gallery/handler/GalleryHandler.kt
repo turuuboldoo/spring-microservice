@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.reactive.function.server.*
-import java.net.URI
 
 @Component
 class GalleryHandler(
@@ -84,12 +83,66 @@ class GalleryHandler(
     }
 
     suspend fun createGalleries(request: ServerRequest): ServerResponse {
-        val data = request.awaitBody(Gallery::class)
-        val gallery = repository.save(data)
+        val requestBody = request.awaitBody(Gallery::class)
+
+        if (requestBody.title.isNullOrEmpty() && requestBody.description.isNullOrEmpty()) {
+            return ServerResponse
+                .badRequest()
+                .buildAndAwait()
+        }
+
+        val gallery = repository.save(requestBody)
+
+//        return ServerResponse
+//            .created(URI.create("api/galleries"))
+//            .contentType(MediaType.APPLICATION_JSON).bodyValueAndAwait(gallery)
+        return ServerResponse
+            .status(201)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValueAndAwait(gallery)
+    }
+
+    suspend fun updateGalleries(request: ServerRequest): ServerResponse {
+        val id = request.pathVariable("id").toLong()
+        val requestBody = request.awaitBody(Gallery::class)
+
+
+        if (requestBody?.title.isNullOrEmpty() && requestBody?.description.isNullOrEmpty()) {
+            return ServerResponse
+                .badRequest()
+                .buildAndAwait()
+        }
+
+        val gallery = repository.findById(id)
+            ?: return ServerResponse
+                .notFound()
+                .buildAndAwait()
+
+        val updatedGallery = repository.save(requestBody.copy(id = gallery.id))
 
         return ServerResponse
-            .created(URI.create("api/createGalleries"))
+            .ok()
             .contentType(MediaType.APPLICATION_JSON)
-            .buildAndAwait()
+            .bodyValueAndAwait(updatedGallery)
     }
+
+
+    suspend fun delete(request: ServerRequest): ServerResponse {
+        val id = request.pathVariable("id").toLong()
+
+        return if (repository.existsById(id)) {
+            repository.deleteById(id)
+
+            ServerResponse
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValueAndAwait(mapOf("message" to "success"))
+        } else {
+            ServerResponse
+                .notFound()
+                .buildAndAwait()
+        }
+    }
+
 }
+

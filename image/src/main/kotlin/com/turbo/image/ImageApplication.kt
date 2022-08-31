@@ -108,6 +108,66 @@ class ImageHandler(private val repository: ImageRepository) {
                 .buildAndAwait()
         }
     }
+
+    suspend fun store(request: ServerRequest): ServerResponse {
+        val requestBody = request.awaitBody(Image::class)
+
+        if (requestBody.name.isNullOrEmpty() && requestBody.url.isNullOrEmpty()) {
+            return ServerResponse
+                .badRequest()
+                .buildAndAwait()
+        }
+
+        val gallery = repository.save(requestBody)
+
+        return ServerResponse
+            .status(201)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValueAndAwait(gallery)
+    }
+
+    suspend fun update(request: ServerRequest): ServerResponse {
+        val id = request.pathVariable("id").toLong()
+        val requestBody = request.awaitBodyOrNull(Image::class)
+
+        if (requestBody?.name.isNullOrEmpty() && requestBody?.url.isNullOrEmpty()) {
+            return ServerResponse
+                .badRequest()
+                .buildAndAwait()
+        }
+
+        val gallery = repository.findById(id)
+            ?: return ServerResponse
+                .notFound()
+                .buildAndAwait()
+
+        val updatedGallery = repository.save(requestBody!!.copy(id = gallery.id))
+
+        return ServerResponse
+            .ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValueAndAwait(updatedGallery)
+    }
+
+    suspend fun delete(request: ServerRequest): ServerResponse {
+        val id = request.pathVariable("id").toLong()
+
+        return if (repository.existsById(id)) {
+            repository.deleteById(id)
+
+            ServerResponse
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValueAndAwait(mapOf("message" to "success"))
+        } else {
+            ServerResponse
+                .notFound()
+                .buildAndAwait()
+        }
+    }
+
+
+
 }
 
 
@@ -120,5 +180,8 @@ class ImageRouteConfig(
     fun routes() = coRouter {
         GET("api/images", handler::getImages)
         GET("api/images/{id}", handler::getImage)
+        POST("api/images", handler::store)
+        PUT("api/images/{id}", handler::update)
+        DELETE("api/images/{id}", handler::delete)
     }
 }
