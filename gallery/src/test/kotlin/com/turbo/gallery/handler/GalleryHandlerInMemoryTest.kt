@@ -54,7 +54,7 @@ internal class GalleryHandlerInMemoryTest(
         repository.seed(gallery(), anotherGallery())
 
         client.get()
-            .uri("/api/gallery")
+            .uri("/api/galleries")
             .exchange()
             .expectStatus()
             .isOk
@@ -75,7 +75,7 @@ internal class GalleryHandlerInMemoryTest(
         repository.seed(gallery(), anotherGallery())
 
         client.get()
-            .uri("/api/gallery/1")
+            .uri("/api/galleries/1")
             .exchange()
             .expectStatus()
             .isOk
@@ -92,7 +92,7 @@ internal class GalleryHandlerInMemoryTest(
     @Test
     fun `it should return not found when trying to get gallery with non exist id`() {
         client.get()
-            .uri("/api/gallery/10")
+            .uri("/api/galleries/10")
             .exchange()
             .expectStatus()
             .isNotFound
@@ -101,7 +101,7 @@ internal class GalleryHandlerInMemoryTest(
     @Test
     fun `it should store gallery`() {
         client.post()
-            .uri("/api/gallery")
+            .uri("/api/galleries")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(gallery())
@@ -118,7 +118,7 @@ internal class GalleryHandlerInMemoryTest(
     @Test
     fun `it should return bad request when create gallery with empty body`() {
         client.post()
-            .uri("/api/gallery")
+            .uri("/api/galleries")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(fromValue("{}"))
@@ -134,7 +134,7 @@ internal class GalleryHandlerInMemoryTest(
         val updatedGallery = gallery(title = "updated title")
 
         client.put()
-            .uri("/api/gallery/1")
+            .uri("/api/galleries/1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(updatedGallery)
@@ -153,7 +153,7 @@ internal class GalleryHandlerInMemoryTest(
         repository.seed(gallery(), anotherGallery())
 
         client.put()
-            .uri("/api/gallery/1")
+            .uri("/api/galleries/1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(fromValue("{}"))
@@ -167,7 +167,7 @@ internal class GalleryHandlerInMemoryTest(
         val updatedGallery = gallery(title = "updated title")
 
         client.put()
-            .uri("/api/gallery/1")
+            .uri("/api/galleries/1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(updatedGallery)
@@ -181,7 +181,7 @@ internal class GalleryHandlerInMemoryTest(
         repository.seed(gallery(), anotherGallery())
 
         client.delete()
-            .uri("/api/gallery/1")
+            .uri("/api/galleries/1")
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus()
@@ -191,7 +191,7 @@ internal class GalleryHandlerInMemoryTest(
     @Test
     fun `it should return not found when delete gallery with non existing id`() {
         client.delete()
-            .uri("/api/gallery/1")
+            .uri("/api/galleries/1")
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus()

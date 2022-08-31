@@ -51,7 +51,7 @@ internal class GalleryHandlerTest {
 
         client
             .post()
-            .uri("/api/gallery/")
+            .uri("/api/galleries/")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(gallery)
@@ -74,7 +74,7 @@ internal class GalleryHandlerTest {
 
         client
             .post()
-            .uri("/api/gallery/")
+            .uri("/api/galleries/")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .body(fromValue("{}"))
@@ -93,7 +93,7 @@ internal class GalleryHandlerTest {
         }
 
         client.get()
-            .uri("/api/gallery")
+            .uri("/api/galleries")
             .exchange()
             .expectStatus()
             .isOk
@@ -111,7 +111,7 @@ internal class GalleryHandlerTest {
         }
 
         client.get()
-            .uri("/api/gallery/1")
+            .uri("/api/galleries/1")
             .exchange()
             .expectStatus()
             .isOk
@@ -142,7 +142,7 @@ internal class GalleryHandlerTest {
 
         client
             .put()
-            .uri("/api/gallery/2")
+            .uri("/api/galleries/2")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(updatedGallery)
@@ -167,7 +167,7 @@ internal class GalleryHandlerTest {
 
         client
             .put()
-            .uri("/api/gallery/2")
+            .uri("/api/galleries/2")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(updatedGallery)
