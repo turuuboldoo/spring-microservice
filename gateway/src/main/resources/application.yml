@@ -10,11 +10,11 @@ spring:
         - id: gallery
           uri: lb://gallery
           predicates:
-            - Path=/api/galleries/{id}, /api/galleries, api/images?galleryId={id}
+            - Path=/api/galleries, /api/galleries/{id}, /api/createGalleries
         - id: image
           uri: lb://image
           predicates:
-            - Path=/api/images/{id}, /api/images, api/Images/galleryId={id}
+            - Path=/api/images, /api/images/{id}, /api/Images/galleryId={id}
         - id: eureka
           uri: http://localhost:8761
           predicates:

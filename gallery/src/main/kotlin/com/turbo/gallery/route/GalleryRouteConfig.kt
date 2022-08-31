@@ -9,11 +9,11 @@ import org.springframework.web.reactive.function.server.coRouter
 class GalleryRouteConfig(
     private val handler: GalleryHandler
 ) {
-
     @Bean
     fun routes() = coRouter {
         GET("/", handler::getRoot)
         GET("api/galleries", handler::getGalleries)
         GET("api/galleries/{id}", handler::getGallery)
+        POST("api/createGalleries", handler::createGalleries)
     }
 }

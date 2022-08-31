@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.reactive.server.WebTestClient
-import org.springframework.test.web.reactive.server.WebTestClient.ListBodySpec
 import org.springframework.test.web.reactive.server.expectBody
 import org.springframework.test.web.reactive.server.expectBodyList
 import org.springframework.web.reactive.function.BodyInserters.fromValue
@@ -61,7 +60,7 @@ internal class GalleryHandlerInMemoryTest(
             .expectHeader()
             .contentType(MediaType.APPLICATION_JSON)
             .expectBodyList<Gallery>()
-            .value<ListBodySpec<Gallery>> { galleries ->
+            .value<WebTestClient.ListBodySpec<Gallery>> { galleries ->
                 Assertions.assertThat(galleries[0].title)
                     .isEqualTo(gallery().title)
                 Assertions.assertThat(galleries[1].title)

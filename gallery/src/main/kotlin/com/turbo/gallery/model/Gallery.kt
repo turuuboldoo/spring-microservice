@@ -14,8 +14,6 @@ data class Gallery(
 
     @Column
     var description: String? = null,
-
-    var image: List<Image>? = null
 ){
     class Builder {
         private var id: Long? = null
@@ -48,3 +46,10 @@ data class Image(
     var url: String,
     var galleryId: Int,
 )
+
+class GalleryDto{
+    var id: Long? = null
+    var title: String? = null
+    var description: String? = null
+    var image: List<Image>? = null
+}
