@@ -4,7 +4,6 @@ import com.turbo.gallery.model.Gallery
 import com.turbo.gallery.model.GalleryDto
 import com.turbo.gallery.model.Image
 import com.turbo.gallery.repository.GalleryRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
@@ -29,8 +28,9 @@ class GalleryHandler(
             .contentType(MediaType.APPLICATION_JSON)
             .bodyAndAwait(repository.findAll())
 
-    @Autowired
-    private lateinit var client: WebClient
+    private var client: WebClient = WebClient.builder()
+        .baseUrl("http://127.0.0.1")
+        .build()
 
     suspend fun getGallery(request: ServerRequest): ServerResponse {
         val id = request.pathVariable("id").toLong()
@@ -47,25 +47,15 @@ class GalleryHandler(
                 .retrieve()
                 .awaitBody<List<Image>>()
 
-            println(body)
-
             galleryDto.id = gallery?.id
             galleryDto.title = gallery?.title
             galleryDto.description = gallery?.description
             galleryDto.image = body
 
-            return when {
-                galleryDto != null -> {
-                    ServerResponse
-                        .ok()
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .bodyValueAndAwait(galleryDto)
-                }
-
-                else -> ServerResponse
-                    .notFound()
-                    .buildAndAwait()
-            }
+            return ServerResponse
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValueAndAwait(galleryDto)
         }
 
         return when {
@@ -104,10 +94,9 @@ class GalleryHandler(
 
     suspend fun updateGalleries(request: ServerRequest): ServerResponse {
         val id = request.pathVariable("id").toLong()
-        val requestBody = request.awaitBody(Gallery::class)
+        val requestBody = request.awaitBodyOrNull(Gallery::class)
 
-
-        if (requestBody?.title.isNullOrEmpty() && requestBody?.description.isNullOrEmpty()) {
+        if (requestBody?.title.isNullOrEmpty() || requestBody?.description.isNullOrEmpty()) {
             return ServerResponse
                 .badRequest()
                 .buildAndAwait()
@@ -118,7 +107,7 @@ class GalleryHandler(
                 .notFound()
                 .buildAndAwait()
 
-        val updatedGallery = repository.save(requestBody.copy(id = gallery.id))
+        val updatedGallery = repository.save(requestBody!!.copy(id = gallery.id))
 
         return ServerResponse
             .ok()

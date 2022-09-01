@@ -49,8 +49,7 @@ internal class GalleryHandlerTest {
             savedGallery.captured
         }
 
-        client
-            .post()
+        client.post()
             .uri("/api/galleries/")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
@@ -192,7 +191,7 @@ internal class GalleryHandlerTest {
 
         client
             .delete()
-            .uri("/api/gallery/2")
+            .uri("/api/galleries/2")
             .exchange()
             .expectStatus()
             .isNoContent
