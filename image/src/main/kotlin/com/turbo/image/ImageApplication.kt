@@ -184,9 +184,8 @@ class ImageHandler(private val repository: ImageRepository) {
             repository.deleteById(id)
 
             ServerResponse
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValueAndAwait(mapOf("message" to "success"))
+                .noContent()
+                .buildAndAwait()
         } else {
             ServerResponse
                 .notFound()

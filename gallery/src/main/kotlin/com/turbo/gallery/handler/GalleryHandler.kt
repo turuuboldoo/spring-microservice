@@ -98,7 +98,7 @@ class GalleryHandler(
 
         if (requestBody?.title.isNullOrEmpty() || requestBody?.description.isNullOrEmpty()) {
             return ServerResponse
-                .badRequest()
+                .notFound()
                 .buildAndAwait()
         }
 
@@ -123,9 +123,8 @@ class GalleryHandler(
             repository.deleteById(id)
 
             ServerResponse
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValueAndAwait(mapOf("message" to "success"))
+                .noContent()
+                .buildAndAwait()
         } else {
             ServerResponse
                 .notFound()

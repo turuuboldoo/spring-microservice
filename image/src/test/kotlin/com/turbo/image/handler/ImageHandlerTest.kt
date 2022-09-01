@@ -211,7 +211,7 @@ internal class ImageHandlerTest {
 
         client
             .delete()
-            .uri("/api/cats/2")
+            .uri("/api/images/2")
             .exchange()
             .expectStatus()
             .isNotFound

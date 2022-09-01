@@ -189,8 +189,7 @@ internal class GalleryHandlerTest {
             nothing
         }
 
-        client
-            .delete()
+        client.delete()
             .uri("/api/galleries/2")
             .exchange()
             .expectStatus()
@@ -207,9 +206,8 @@ internal class GalleryHandlerTest {
             false
         }
 
-        client
-            .delete()
-            .uri("/api/cats/2")
+        client.delete()
+            .uri("/api/galleries/2")
             .exchange()
             .expectStatus()
             .isNotFound
