@@ -1,6 +1,5 @@
 package com.turbo.image.config
 
-
 import io.r2dbc.h2.H2ConnectionFactory
 import io.r2dbc.spi.ConnectionFactory
 import org.springframework.context.annotation.Bean
@@ -10,11 +9,11 @@ import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer
 import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator
 
 @Configuration
-class DatabaseConfig {
+class DatabaseConfigure {
 
     @Bean
     fun factory(): ConnectionFactory {
-        return H2ConnectionFactory.inMemory("images")
+        return H2ConnectionFactory.inMemory("image")
     }
 
     @Bean

@@ -22,22 +22,28 @@ import org.springframework.web.reactive.function.BodyInserters.fromValue
 @SpringBootTest
 @AutoConfigureWebTestClient
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-internal class ImageHandlerInMemoryTest(
-    @Autowired private val repository: ImageRepository,
-    @Autowired private val client: WebTestClient,
-) {
+internal class ImageHandlerInMemoryTest {
+
+    @Autowired
+    private lateinit var repository: ImageRepository
+
+    @Autowired
+    private lateinit var client: WebTestClient
 
     private fun image(
         name: String = "name",
         url: String = "url",
+        galleryId: Long = 1,
     ) = Image(
         name = name,
-        url = url
+        url = url,
+        galleryId = galleryId
     )
 
     private fun anotherImage() = image(
         name = "another name",
-        url = "another url"
+        url = "another url",
+        galleryId = 1
     )
 
     private fun ImageRepository.seed(vararg  images: Image) =
@@ -64,7 +70,7 @@ internal class ImageHandlerInMemoryTest(
             .expectBodyList<Image>()
             .value<ListBodySpec<Image>> { images ->
                 Assertions.assertThat(images[0].name)
-                    .isEqualTo(Image().name)
+                    .isEqualTo(image().name)
                 Assertions.assertThat(images[1].name)
                     .isEqualTo(anotherImage().name)
             }
