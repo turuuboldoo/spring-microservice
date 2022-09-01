@@ -14,7 +14,7 @@ class DatabaseConfig {
 
     @Bean
     fun factory(): ConnectionFactory {
-        return H2ConnectionFactory.inMemory("gallery")
+        return H2ConnectionFactory.inMemory("images")
     }
 
     @Bean

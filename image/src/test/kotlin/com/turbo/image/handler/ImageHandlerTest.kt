@@ -2,13 +2,10 @@ package com.turbo.image.handler
 
 
 import com.ninjasquad.springmockk.MockkBean
-import com.turbo.gallery.model.Gallery
-import com.turbo.gallery.repository.GalleryRepository
-import com.turbo.gallery.route.GalleryRouteConfig
 import com.turbo.image.Image
 import com.turbo.image.ImageHandler
 import com.turbo.image.ImageRepository
-import com.turbo.image.RouteConfig
+import com.turbo.image.ImageRouteConfig
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -25,8 +22,8 @@ import org.springframework.test.web.reactive.server.expectBodyList
 import org.springframework.web.reactive.function.BodyInserters.fromValue
 
 @WebFluxTest
-@Import(RouteConfig::class, ImageHandler::class)
-internal class GalleryHandlerTest {
+@Import(ImageRouteConfig::class, ImageHandler::class)
+internal class ImageHandlerTest {
 
     @MockkBean
     private lateinit var repository: ImageRepository
@@ -35,23 +32,23 @@ internal class GalleryHandlerTest {
     private lateinit var client: WebTestClient
 
     private val image = Image.Builder()
-        .setTitle("name")
-        .setDesc("url")
+        .setName("name")
+        .setUrl("url")
         .build()
 
     private val anotherImage = Image.Builder()
-        .setTitle("another name")
-        .setDesc("another url")
+        .setName("another name")
+        .setUrl("another url")
         .build()
 
     @Test
-    fun `it should save new gallery`() {
-        val savedGallery = slot<Image>()
+    fun `it should save new image`() {
+        val savedImage = slot<Image>()
 
         coEvery {
-            repository.save(capture(savedGallery))
+            repository.save(capture(savedImage))
         } coAnswers {
-            savedGallery.captured
+            savedImage.captured
         }
 
         client
@@ -69,12 +66,12 @@ internal class GalleryHandlerTest {
 
     @Test
     fun `it should return bad request when trying to send request empty body`() {
-        val savedGallery = slot<Image>()
+        val savedImage = slot<Image>()
 
         coEvery {
-            repository.save(capture(savedGallery))
+            repository.save(capture(savedImage))
         } coAnswers {
-            savedGallery.captured
+            savedImage.captured
         }
 
         client
@@ -89,7 +86,7 @@ internal class GalleryHandlerTest {
     }
 
     @Test
-    fun `it should return all galleries`() {
+    fun `it should return all images`() {
         every {
             repository.findAll()
         } returns flow {
@@ -108,7 +105,7 @@ internal class GalleryHandlerTest {
     }
 
     @Test
-    fun `it should return gallery`() {
+    fun `it should return image`() {
         coEvery {
             repository.findById(any())
         } coAnswers {
@@ -125,24 +122,24 @@ internal class GalleryHandlerTest {
     }
 
     @Test
-    fun `it should update gallery`() {
+    fun `it should update image`() {
         coEvery {
             repository.findById(any())
         } coAnswers {
             image
         }
 
-        val savedGallery = slot<Image>()
+        val savedImage = slot<Image>()
 
         coEvery {
-            repository.save(capture(savedGallery))
+            repository.save(capture(savedImage))
         } coAnswers {
-            savedGallery.captured
+            savedImage.captured
         }
 
         val updatedImage = Image.Builder()
-            .setTitle("updated name")
-            .setDesc("updated url")
+            .setName("updated name")
+            .setUrl("updated url")
             .build()
 
         client
@@ -168,14 +165,14 @@ internal class GalleryHandlerTest {
             nothing
         }
 
-        val updatedGallery = Image(name = "New fancy name")
+        val updatedImage = Image(name = "New fancy name")
 
         client
             .put()
-            .uri("/api/image/2")
+            .uri("/api/images/2")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(updatedGallery)
+            .bodyValue(updatedImage)
             .exchange()
             .expectStatus()
             .isNotFound
@@ -197,7 +194,7 @@ internal class GalleryHandlerTest {
 
         client
             .delete()
-            .uri("/api/image/2")
+            .uri("/api/images/2")
             .exchange()
             .expectStatus()
             .isNoContent

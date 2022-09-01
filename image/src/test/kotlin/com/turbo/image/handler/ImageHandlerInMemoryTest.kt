@@ -22,7 +22,7 @@ import org.springframework.web.reactive.function.BodyInserters.fromValue
 @SpringBootTest
 @AutoConfigureWebTestClient
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-internal class GalleryHandlerInMemoryTest(
+internal class ImageHandlerInMemoryTest(
     @Autowired private val repository: ImageRepository,
     @Autowired private val client: WebTestClient,
 ) {
@@ -51,7 +51,7 @@ internal class GalleryHandlerInMemoryTest(
     }
 
     @Test
-    fun `it should return all galleries`() {
+    fun `it should return all images`() {
         repository.seed(image(), anotherImage())
 
         client.get()
@@ -62,17 +62,17 @@ internal class GalleryHandlerInMemoryTest(
             .expectHeader()
             .contentType(MediaType.APPLICATION_JSON)
             .expectBodyList<Image>()
-            .value<ListBodySpec<Image>> { galleries ->
-                Assertions.assertThat(galleries[0].name)
+            .value<ListBodySpec<Image>> { images ->
+                Assertions.assertThat(images[0].name)
                     .isEqualTo(Image().name)
-                Assertions.assertThat(galleries[1].name)
+                Assertions.assertThat(images[1].name)
                     .isEqualTo(anotherImage().name)
             }
             .hasSize(2)
     }
 
     @Test
-    fun `it should return gallery`() {
+    fun `it should return image`() {
         repository.seed(image(), anotherImage())
 
         client.get()
@@ -91,7 +91,7 @@ internal class GalleryHandlerInMemoryTest(
     }
 
     @Test
-    fun `it should return not found when trying to get gallery with non exist id`() {
+    fun `it should return not found when trying to get image with non exist id`() {
         client.get()
             .uri("/api/images/10")
             .exchange()
@@ -100,7 +100,7 @@ internal class GalleryHandlerInMemoryTest(
     }
 
     @Test
-    fun `it should store gallery`() {
+    fun `it should store image`() {
         client.post()
             .uri("/api/images")
             .accept(MediaType.APPLICATION_JSON)
@@ -117,7 +117,7 @@ internal class GalleryHandlerInMemoryTest(
     }
 
     @Test
-    fun `it should return bad request when create gallery with empty body`() {
+    fun `it should return bad request when create image with empty body`() {
         client.post()
             .uri("/api/images")
             .accept(MediaType.APPLICATION_JSON)
@@ -129,28 +129,28 @@ internal class GalleryHandlerInMemoryTest(
     }
 
     @Test
-    fun `it should update gallery`() {
+    fun `it should update image`() {
         repository.seed(image(), anotherImage())
 
-        val updatedGallery = image(name = "updated name")
+        val updatedImage = image(name = "updated name")
 
         client.put()
             .uri("/api/images/1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(updatedGallery)
+            .bodyValue(updatedImage)
             .exchange()
             .expectStatus()
             .isOk
             .expectBody<Image>()
             .consumeWith { response ->
                 Assertions.assertThat(response.responseBody?.name)
-                    .isEqualTo(updatedGallery.name)
+                    .isEqualTo(updatedImage.name)
             }
     }
 
     @Test
-    fun `it should return bad request when update gallery with empty request body`() {
+    fun `it should return bad request when update image with empty request body`() {
         repository.seed(image(), anotherImage())
 
         client.put()
@@ -164,21 +164,21 @@ internal class GalleryHandlerInMemoryTest(
     }
 
     @Test
-    fun `it should return not found when update gallery with non existing id`() {
-        val updatedGallery = image(name = "updated name")
+    fun `it should return not found when update image with non existing id`() {
+        val updatedImage = image(name = "updated name")
 
         client.put()
             .uri("/api/images/1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(updatedGallery)
+            .bodyValue(updatedImage)
             .exchange()
             .expectStatus()
             .isNotFound
     }
 
     @Test
-    fun `it should delete gallery`() {
+    fun `it should delete image`() {
         repository.seed(image(), anotherImage())
 
         client.delete()
@@ -190,7 +190,7 @@ internal class GalleryHandlerInMemoryTest(
     }
 
     @Test
-    fun `it should return not found when delete gallery with non existing id`() {
+    fun `it should return not found when delete image with non existing id`() {
         client.delete()
             .uri("/api/images/1")
             .accept(MediaType.APPLICATION_JSON)

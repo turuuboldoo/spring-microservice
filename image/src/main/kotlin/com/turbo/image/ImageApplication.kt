@@ -42,17 +42,45 @@ class RouteConfig {
 @Table("images")
 data class Image(
     @Id
-    var id: Int,
+    var id: Long? = null,
 
     @Column
-    var name: String,
+    var name: String? = null,
 
     @Column
-    var url: String,
+    var url: String? = null,
 
     @Column("gallery_id")
-    var galleryId: Long,
-)
+    var galleryId: Long? = null,
+){
+    class Builder {
+        private var id: Long? = null
+        private var name: String? = null
+        private var url: String? = null
+        private var galleryId: Long? = null
+
+        fun setId(id: Long?): Builder {
+            this.id = id
+            return this
+        }
+
+        fun setName(name: String?): Builder {
+            this.name = name
+            return this
+        }
+
+        fun setUrl(url: String?): Builder {
+            this.url = url
+            return this
+        }
+
+        fun setGalleryId (galleryId: Long?): Builder {
+            this.galleryId = galleryId
+            return this
+        }
+        fun build() = Image(id, name, url, galleryId)
+    }
+}
 
 interface ImageRepository : CoroutineCrudRepository<Image, Long> {
 
@@ -165,11 +193,7 @@ class ImageHandler(private val repository: ImageRepository) {
                 .buildAndAwait()
         }
     }
-
-
-
 }
-
 
 @Configuration
 class ImageRouteConfig(
