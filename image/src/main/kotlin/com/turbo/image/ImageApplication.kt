@@ -103,9 +103,7 @@ class ImageHandler(private val repository: ImageRepository) {
             .orElse(null)
 
         if (!galleryId.isNullOrEmpty()) {
-
             val images = repository.findByGalleryId(galleryId.toLong())
-
             return ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -120,8 +118,8 @@ class ImageHandler(private val repository: ImageRepository) {
 
     suspend fun getImage(request: ServerRequest): ServerResponse {
         val id = request.pathVariable("id").toLong()
-
         val image = repository.findById(id)
+        println("123123$image")
 
         return when {
             image != null -> {
@@ -184,7 +182,7 @@ class ImageHandler(private val repository: ImageRepository) {
             repository.deleteById(id)
 
             ServerResponse
-                .noContent()
+                .ok()
                 .buildAndAwait()
         } else {
             ServerResponse
